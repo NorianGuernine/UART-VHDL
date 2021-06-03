@@ -7,12 +7,12 @@ In:
 * clk : FPGA clock.
 * rst : Reset the clock on a rising edge of the input bit.
 * baudrate_clk_ticks : Number of rising edge on the input clock to change the state of the baudrate clock
-The calculation is as follows: <img src="https://render.githubusercontent.com/render/math?math=baudrateclkticks = \frac{\frac{ClockFrequency}{Baudrate}}{4}">
+The calculation is as follows: <img src="https://render.githubusercontent.com/render/math?math=baudrateclkticks = \frac{\frac{ClockFrequency}{Baudrate}}{2}">
 
-	Example for a baud rate of 115200 bits/s and a 100MHz clock:
+	Example for a baud rate of 115200 bits/s and a 50MHz clock:
 
 
-	<img src="https://render.githubusercontent.com/render/math?math=baudrateclkticks = \frac{\frac{100*10^{6}}{115200}}{4} = 217.01 \approx 217">
+	<img src="https://render.githubusercontent.com/render/math?math=baudrateclkticks = \frac{\frac{50*10^{6}}{115200}}{2} = 217.01 \approx 217">
 
 Out:
 * baudclk : Clock at baudrate frequency.
