@@ -95,9 +95,16 @@ begin
             elsif cptBit > 0 then               --Reception of the rest of the trame
                 strame(cptBit) <= sRX;
                 cptBit <= cptBit +1;
-                if cptBit >= 9 then            --Reset counter at the end of reception
-                    cptBit <= 0;
-                    send_reception <= '1';
+                if sparity = "11" or sparity = "00" then 
+                    if cptBit >= 8 then            --Reset counter at the end of reception
+                        cptBit <= 0;
+                        send_reception <= '1';
+                    end if;                   
+                else
+                    if cptBit >= 9 then            --Reset counter at the end of reception
+                        cptBit <= 0;
+                        send_reception <= '1';
+                    end if;
                 end if;
             end if;
         end if;

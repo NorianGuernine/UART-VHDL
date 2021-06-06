@@ -50,7 +50,8 @@ component baudclk
            baudrate_clk_ticks: in std_logic_vector(31 downto 0);
            baudclk : out STD_LOGIC);
 end component;
-signal sRX,clkbaudrate,serror_RX,stimeout,sclk,send_reception,end_emission: std_logic := '0';
+signal sRX,clkbaudrate,serror_RX,stimeout,send_reception,end_emission: std_logic := '0';
+signal sclk: std_logic := '1';
 signal stimeout_value: std_logic_vector(31 downto 0) := "00000000000000000000000000000000";
 signal sbaud_tick_clk: std_logic_vector(31 downto 0);
 signal strame: std_logic_vector(10 downto 0) := "10110101001"; 
@@ -60,17 +61,17 @@ signal sparity : std_logic_vector(1 downto 0) := "00";
 
 begin
     sRX<=strame(cpt);
-    sbaud_tick_clk <= std_logic_vector(to_unsigned(217,32));
+    sbaud_tick_clk <= std_logic_vector(to_unsigned(434,32));
     stimeout_value <= std_logic_vector(to_unsigned(15,32));
     c1: baudclk port map(clk => sclk, rst => '0',baudrate_clk_ticks => sbaud_tick_clk, baudclk => clkbaudrate);
-    c2: UART_RX port map(clk =>clkbaudrate, rst => '0', RX => sRX, parity => sparity, timeout_value =>stimeout_value, error_parity =>serror_RX,end_reception => send_reception, timeout => stimeout,RXREG =>rdata);
+    c2: UART_RX port map(clk =>clkbaudrate, rst => '0', RX => sRX, parity => "01", timeout_value =>stimeout_value, error_parity =>serror_RX,end_reception => send_reception, timeout => stimeout,RXREG =>rdata);
     
     stimulis:process
     begin
         sclk <= '1';
-        wait for 10ns;
+        wait for 5ns;
         sclk <= '0';
-        wait for 10ns;
+        wait for 5ns;
     end process;
     
     baudrate_clk:process

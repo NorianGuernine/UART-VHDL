@@ -32,13 +32,13 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity SEND_RECEIVE_DATA is
+entity DEMO is
     Port ( CLK100MHZ,uart_txd_in : in STD_LOGIC;
            ja,sw: in STD_LOGIC_VECTOR(1 downto 0);
            uart_rxd_out : out STD_LOGIC);
-end SEND_RECEIVE_DATA;
+end DEMO;
 
-architecture Behavioral of SEND_RECEIVE_DATA is
+architecture Behavioral of DEMO is
 component baudclk
     Port ( clk, rst : in STD_LOGIC;
            baudrate_clk_ticks: in std_logic_vector(31 downto 0);
@@ -60,8 +60,9 @@ component UART_RX
         RXREG: out std_logic_vector(7 downto 0));
 end component;
 signal sbaud_tick_clk,stimeout_value: std_logic_vector(31 downto 0);
-signal rdata: std_logic_vector(7 downto 0) := "00000000";
+signal rdata, sauvegarde: std_logic_vector(7 downto 0) := "00000000";
 signal sclk, sTX,clkbaudrate, serror_RX, stimeout,sRX, send_reception, send_transmission: std_logic;
+signal readytosend : std_logic := '0';
 signal ssw: std_logic_vector(1 downto 0);
 
 begin
@@ -71,8 +72,28 @@ begin
     stimeout_value <= std_logic_vector(to_unsigned(1150, 32));
     sbaud_tick_clk <= std_logic_vector(to_unsigned(434,32));
     c1: baudclk port map(clk => sclk, rst => '0',baudrate_clk_ticks => sbaud_tick_clk, baudclk => clkbaudrate);
-    --c2: UART_RX port map(clk =>clkbaudrate, rst => '0', RX => sRX, parity => ssw, timeout_value =>stimeout_value, error_parity =>serror_RX,end_reception => send_reception, timeout => stimeout,RXREG =>rdata);
-    c3: UART_TX port map(clk=> clkbaudrate,rst => '0',set => clkbaudrate, data=> "01101011", parity =>"00", TX => sTX, end_transmission => send_transmission);
+    c2: UART_RX port map(clk =>clkbaudrate, rst => '0', RX => sRX, parity => "10", timeout_value =>stimeout_value, error_parity =>serror_RX,end_reception => send_reception, timeout => stimeout,RXREG =>rdata);
+    c3: UART_TX port map(clk=> clkbaudrate,rst => '0',set => readytosend, data=> sauvegarde, parity =>"10", TX => sTX, end_transmission => send_transmission);
     uart_rxd_out <= sTX;
+    
+    recup_data:process(sclk,send_reception)
+    begin
+        if rising_edge(send_reception) then
+            sauvegarde <= rdata;
+        end if;
+    end process;
+    
+    send_data:process(sclk)
+    begin
+        
+        if rising_edge(sclk) then
+            if send_reception = '1' then
+                readytosend <= '1';
+            else 
+                readytosend <= '0';
+            end if;
+        end if;
+    end process;
+    
 
 end Behavioral;

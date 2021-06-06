@@ -40,7 +40,8 @@ entity UART_TX is
 end UART_TX;
 
 architecture Behavioral of UART_TX is
-signal cpt_TX,cpt_TX_1, ssendOk: integer := 0;        
+signal cpt_TX,cpt_TX_1, ssendOk: integer := 0;  
+signal nb_bit_emission : integer := 9;     
 signal trame : std_logic_vector(10 downto 0) := "10000000000";
 signal send_transmission,set_1: std_logic := '0';
 signal sTX : std_logic := '1';
@@ -87,26 +88,28 @@ begin
                             end if;
                         end loop; 
                         if sparity = "01" then      --Error checking
+                            nb_bit_emission <= 9;
                             if (nb_bits_1 mod 2) = 0 then
                                 trame(9) <= '1';
                             else
                                 trame(9) <= '0';
                             end if;
                         elsif sparity = "10" then      --Error checking
+                            nb_bit_emission <= 9;
                             if (nb_bits_1 mod 2) = 0 then
                                 trame(9) <= '0';
                             else
                                 trame(9) <= '1';
                             end if;
                         else                            --If there is no parity mode we put 0.
-                            trame(9) <= '0';
+                            nb_bit_emission <= 8;
+                            trame(9) <= '1';
                         end if;
                     end if;
                     sTX <= trame(cpt_TX);
                     cpt_TX <= cpt_TX +1;
                     cpt_TX_1 <= cpt_TX; 
-                    
-                    if cpt_TX > 9 then
+                    if cpt_TX > nb_bit_emission  then
                         cpt_TX <= 0; 
                         send_transmission <= '1';  
                     else
