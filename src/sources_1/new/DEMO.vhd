@@ -34,8 +34,9 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity DEMO is
     Port ( CLK100MHZ,uart_txd_in : in STD_LOGIC;
-           ja,sw: in STD_LOGIC_VECTOR(1 downto 0);
-           uart_rxd_out : out STD_LOGIC);
+           sw: in STD_LOGIC_VECTOR(1 downto 0);
+           uart_rxd_out : out STD_LOGIC;
+           ja : out STD_LOGIC_VECTOR(0 downto 0));
 end DEMO;
 
 architecture Behavioral of DEMO is
@@ -72,9 +73,10 @@ begin
     stimeout_value <= std_logic_vector(to_unsigned(1150, 32));
     sbaud_tick_clk <= std_logic_vector(to_unsigned(434,32));
     c1: baudclk port map(clk => sclk, rst => '0',baudrate_clk_ticks => sbaud_tick_clk, baudclk => clkbaudrate);
-    c2: UART_RX port map(clk =>clkbaudrate, rst => '0', RX => sRX, parity => "10", timeout_value =>stimeout_value, error_parity =>serror_RX,end_reception => send_reception, timeout => stimeout,RXREG =>rdata);
-    c3: UART_TX port map(clk=> clkbaudrate,rst => '0',set => readytosend, data=> sauvegarde, parity =>"10", TX => sTX, end_transmission => send_transmission);
+    c2: UART_RX port map(clk =>clkbaudrate, rst => '0', RX => sRX, parity => "01", timeout_value =>stimeout_value, error_parity =>serror_RX,end_reception => send_reception, timeout => stimeout,RXREG =>rdata);
+    c3: UART_TX port map(clk=> clkbaudrate,rst => '0',set => readytosend, data=> sauvegarde, parity =>"01", TX => sTX, end_transmission => send_transmission);
     uart_rxd_out <= sTX;
+    ja(0) <= sTX;
     
     recup_data:process(sclk,send_reception)
     begin
