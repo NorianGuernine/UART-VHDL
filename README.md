@@ -28,7 +28,7 @@ The calculation is as follows: <img src="https://render.githubusercontent.com/re
 	Example for a baud rate of 115200 bits/s and a 100MHz clock:
 
 
-	<img src="https://render.githubusercontent.com/render/math?math=baudrateclkticks = \frac{\frac{100*10^{6}}{115200}}{2} = 217.01 \approx 217">
+	<img src="https://render.githubusercontent.com/render/math?math=baudrateclkticks = \frac{\frac{100*10^{6}}{115200}}{2} = 434.02 \approx 434">
 
 Out:
 * baudclk : Clock at baudrate frequency.
