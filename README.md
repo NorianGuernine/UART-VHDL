@@ -1,5 +1,19 @@
 # UART-VHDL
 
+##Demo
+Here is a demo of the Rx and Tx modules for the Arty A7 card.
+The connection between the FPGA and the external terminal is made through the USB port.
+The Rx module of the FPGA is connected to the Tx module of the FPGA.
+Therefore, the Tx module returns the information received by the Rx module.
+The baudrate for the demo is 115200, the parity is odd.
+Pin G13 is used to see the Tx signal.
+
+Connection via Putty:
+![Putty](https://github.com/NorianGuernine/UART-VHDL/blob/main/Pictures/HelloWorldPutty.png)
+
+Tx signal:
+![Oscilloscope](https://github.com/NorianGuernine/UART-VHDL/blob/main/Pictures/oscilloscope_G13.png)
+
 ## Baudclk
 This is the clock for the duration of one bit as a function of the baudrate.
 

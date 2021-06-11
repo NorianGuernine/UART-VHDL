@@ -95,14 +95,6 @@ begin
         wait for 95us;
     end process;
     
-    stimulis_bitparity: process
-    begin
-        wait for 285us;
-        if end_emission = '0' then
-            strame(10) <= not strame(10);
-        end if;
-    end process;
-    
     stimulis_end_emission:process
     begin
         wait for 570us;
