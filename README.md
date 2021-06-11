@@ -12,7 +12,7 @@ Connection via Putty:
 
 ![Putty](https://github.com/NorianGuernine/UART-VHDL/blob/main/Pictures/HelloWorldPutty.png)
 
-Tx signal:
+Tx signal (bit duration = 8.67µs 1 square = 10µS:
 
 ![Oscilloscope](https://github.com/NorianGuernine/UART-VHDL/blob/main/Pictures/oscilloscope_G13.png)
 
